@@ -1,7 +1,6 @@
 /* Sora Sweets – lógica compartida de las vistas (conectada al API en Render) */
 (() => {
-  const API = 'https://sora-sweets-backend.onrender.com/api';  const FREE = 180, COUPON = 10, SHIP = 35;
-  const PAGES = { 'catalogo-feed': 'catalogo.html', explorar: 'catalogo.html', carrito: 'carrito.html', 'registro-cuenta': 'registro.html' };
+const API = 'https://sorasweets.me/api';  const PAGES = { 'catalogo-feed': 'catalogo.html', explorar: 'catalogo.html', carrito: 'carrito.html', 'registro-cuenta': 'registro.html' };
   const CHIP = 'category-chip flex-shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-transform active:scale-95';
   const $ = (s, r = document) => r.querySelector(s);
   const money = n => '$' + Number(n || 0).toFixed(2);
