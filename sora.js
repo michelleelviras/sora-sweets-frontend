@@ -1,7 +1,6 @@
 /* Sora Sweets – lógica compartida de las vistas (conectada al API en Render) */
 (() => {
-const API = 'https://sorasweets.me/api';  const PAGES = { 'catalogo-feed': 'catalogo.html', explorar: 'catalogo.html', carrito: 'carrito.html', 'registro-cuenta': 'registro.html' };
-  const CHIP = 'category-chip flex-shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-transform active:scale-95';
+  const API = 'https://sora-sweets-backend.onrender.com/api';  const CHIP = 'category-chip flex-shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-transform active:scale-95';
   const $ = (s, r = document) => r.querySelector(s);
   const money = n => '$' + Number(n || 0).toFixed(2);
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -122,7 +121,7 @@ const API = 'https://sorasweets.me/api';  const PAGES = { 'catalogo-feed': 'cata
       const items = Cart.items, t = Cart.totals();
       box.innerHTML = items.length
         ? items.map(i => fill(tpl, { id: i.id, img: esc(i.imagen || PH), cat: esc(i.categoria || 'Dulce'), nombre: esc(i.nombre), desc: esc(i.descripcion), precio: money(i.precio), subtotal: money(i.precio * i.cantidad), qty: i.cantidad })).join('')
-        : '<div class="text-center py-10 text-on-surface-variant">Tu carrito está vacío 🍡<br><a class="text-primary underline font-bold" href="catalogo.html">Ir al catálogo</a></div>';
+        : '<div class="text-center py-10 text-on-surface-variant">Tu carrito está vacío 🍡<br><a class="text-primary underline font-bold" href="index.html">Ir al catálogo</a></div>';
       set('badge-total-items', t.count + (t.count === 1 ? ' ítem' : ' items'));
       set('summary-items-count', `Subtotal (${t.count} ${t.count === 1 ? 'artículo' : 'artículos'})`);
       set('summary-subtotal', money(t.subtotal));
@@ -167,7 +166,7 @@ const API = 'https://sorasweets.me/api';  const PAGES = { 'catalogo-feed': 'cata
       const d = await post('/usuarios', { nombre: $('#fullName').value.trim(), email: $('#email').value.trim() });
       save('sora_user', { _id: d.usuario._id, nombre: d.usuario.nombre, email: d.usuario.email });
       btn.textContent = '¡Bienvenido al Club!';
-      setTimeout(() => { location.href = 'catalogo.html'; }, 900);
+      setTimeout(() => { location.href = 'index.html'; }, 900);
     } catch (e) {
       btn.disabled = false; btn.innerHTML = html; alert('No se pudo crear la cuenta: ' + e.message);
     }
@@ -179,7 +178,7 @@ const API = 'https://sorasweets.me/api';  const PAGES = { 'catalogo-feed': 'cata
     try { if (u) docs = await (await fetch(`${API}/ordenes/ticket/${encodeURIComponent(u.nombre)}`)).json(); } catch (e) { /* sin conexión */ }
     if (!Array.isArray(docs) || !docs.length) {
       set('t-gracias', 'Aún no tienes pedidos 🍡');
-      $('#ticket-items').innerHTML = '<a class="text-primary underline font-bold" href="catalogo.html">Ir al catálogo</a>';
+      $('#ticket-items').innerHTML = '<a class="text-primary underline font-bold" href="index.html">Ir al catálogo</a>';
       return;
     }
     const last = docs.reduce((a, b) => new Date(b.fecha) > new Date(a.fecha) ? b : a);
